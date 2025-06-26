@@ -275,3 +275,40 @@ type GetAllFilesResponse struct {
 	Items []File `json:"items"`
 	Total uint64 `json:"total"`
 }
+
+// Attendance represents a single attendance record in the database.
+type Attendance struct {
+	ID        int64            `json:"id"`
+	UserID    int64            `json:"user_id"` // Foreign key to the users table
+	Date      time.Time        `json:"date"`
+	InTime    time.Time        `json:"in_time"`
+	OutTime   *time.Time       `json:"out_time"` // Nullable: Represents when the user left
+	Status    AttendanceStatus `json:"status"`   // Enum type
+	BaseModel                  // Embeds CreatedAt and UpdatedAt
+}
+
+// CreateAttendanceRequest is the structure for creating a new attendance record.
+type CreateAttendanceRequest struct {
+	UserID  int64            `json:"user_id" validate:"required"`
+	Date    time.Time        `json:"date" validate:"required"`
+	InTime  time.Time        `json:"in_time" validate:"required"`
+	OutTime *time.Time       `json:"out_time"`                                             // Optional
+	Status  AttendanceStatus `json:"status" validate:"required,oneof=present absent late"` // Example validation tag
+}
+
+// UpdateAttendanceRequest is the structure for updating an existing attendance record.
+// Pointers are used for fields that are optional to update.
+type UpdateAttendanceRequest struct {
+	ID      int64             `json:"id" validate:"required"` // ID of the record to update
+	UserID  *int64            `json:"user_id"`                // Optional: If user can be changed
+	Date    *time.Time        `json:"date"`
+	InTime  *time.Time        `json:"in_time"`
+	OutTime *time.Time        `json:"out_time"` // Can be set, updated, or nulled (if the value is nil)
+	Status  *AttendanceStatus `json:"status" validate:"omitempty,oneof=present absent late"`
+}
+
+// GetAllAttendancesResponse is the structure for listing attendance records, including total count.
+type GetAllAttendancesResponse struct {
+	Items []Attendance `json:"items"`
+	Total uint64       `json:"total"`
+}
