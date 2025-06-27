@@ -244,7 +244,7 @@ func (p *bonusesRepo) List(ctx context.Context, limit, offset uint64, filter map
 		if nullReason.Valid {
 			bonus.Reason = &nullReason.String
 		}
-		bonuses.Items = append(bonuses.Items, bonus)
+		bonuses.Items = append(bonuses.Items, &bonus)
 	}
 
 	// Get total count

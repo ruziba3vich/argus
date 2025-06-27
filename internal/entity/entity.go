@@ -97,8 +97,8 @@ type UpdateBonusRequest struct {
 }
 
 type GetAllBonusesResponse struct {
-	Items []Bonus `json:"items"`
-	Total uint64  `json:"total"`
+	Items []*Bonus `json:"items"`
+	Total uint64   `json:"total"`
 }
 
 // Notifications
@@ -126,8 +126,8 @@ type UpdateNotificationRequest struct {
 }
 
 type GetAllNotificationsResponse struct {
-	Items []Notification `json:"items"`
-	Total uint64         `json:"total"`
+	Items []*Notification `json:"items"`
+	Total uint64          `json:"total"`
 }
 
 // Users
@@ -170,8 +170,8 @@ type UpdateUserRequest struct {
 }
 
 type GetAllUsersResponse struct {
-	Items []User `json:"items"`
-	Total uint64 `json:"total"`
+	Items []*User `json:"items"`
+	Total uint64  `json:"total"`
 }
 
 // Salaries
@@ -209,8 +209,8 @@ type UpdateSalaryRequest struct {
 }
 
 type GetAllSalariesResponse struct {
-	Items []Salary `json:"items"`
-	Total uint64   `json:"total"`
+	Items []*Salary `json:"items"`
+	Total uint64    `json:"total"`
 }
 
 // Tasks
@@ -248,8 +248,8 @@ type UpdateTaskRequest struct {
 }
 
 type GetAllTasksResponse struct {
-	Items []Task `json:"items"`
-	Total uint64 `json:"total"`
+	Items []*Task `json:"items"`
+	Total uint64  `json:"total"`
 }
 
 // Files
@@ -272,8 +272,8 @@ type UpdateFileRequest struct {
 }
 
 type GetAllFilesResponse struct {
-	Items []File `json:"items"`
-	Total uint64 `json:"total"`
+	Items []*File `json:"items"`
+	Total uint64  `json:"total"`
 }
 
 // Attendance represents a single attendance record in the database.
@@ -309,6 +309,6 @@ type UpdateAttendanceRequest struct {
 
 // GetAllAttendancesResponse is the structure for listing attendance records, including total count.
 type GetAllAttendancesResponse struct {
-	Items []Attendance `json:"items"`
-	Total uint64       `json:"total"`
+	Items []*Attendance `json:"items"`
+	Total uint64        `json:"total"`
 }

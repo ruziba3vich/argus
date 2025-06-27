@@ -206,7 +206,7 @@ func (p *fileRepo) List(ctx context.Context, limit, offset uint64, filter map[st
 		if nullTaskID.Valid {
 			file.TaskID = &nullTaskID.Int64
 		}
-		files.Items = append(files.Items, file)
+		files.Items = append(files.Items, &file)
 	}
 
 	// Get total count

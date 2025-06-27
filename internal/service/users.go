@@ -253,7 +253,7 @@ func (p *userRepo) List(ctx context.Context, limit, offset uint64, filter map[st
 		if nullBio.Valid {
 			user.Bio = &nullBio.String
 		}
-		users.Items = append(users.Items, user)
+		users.Items = append(users.Items, &user)
 	}
 
 	// Get total count

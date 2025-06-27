@@ -221,7 +221,7 @@ func (p *salaryRepo) List(ctx context.Context, limit, offset uint64, filter map[
 		if nullUpdaterAdminID.Valid {
 			salary.UpdaterAdminID = &nullUpdaterAdminID.Int64
 		}
-		salaries.Items = append(salaries.Items, salary)
+		salaries.Items = append(salaries.Items, &salary)
 	}
 
 	// Get total count

@@ -262,7 +262,7 @@ func (p *taskRepo) List(ctx context.Context, limit, offset uint64, filter map[st
 		if nullDueDate.Valid {
 			task.DueDate = &nullDueDate.Time
 		}
-		tasks.Items = append(tasks.Items, task)
+		tasks.Items = append(tasks.Items, &task)
 	}
 
 	// Get total count

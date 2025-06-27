@@ -22,8 +22,8 @@ type (
 	}
 
 	ListUsers struct {
-		Items []User `json:"itmes"`
-		Total int    `json:"total"`
+		Items []*User `json:"itmes"`
+		Total int     `json:"total"`
 	}
 
 	// LoginByPhoneRequest represents the login by phone request payload

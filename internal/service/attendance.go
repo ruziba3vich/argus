@@ -217,7 +217,7 @@ func (p *attendanceRepo) List(ctx context.Context, limit, offset uint64, filter 
 		if nullOutTime.Valid {
 			attendance.OutTime = &nullOutTime.Time
 		}
-		attendances.Items = append(attendances.Items, attendance)
+		attendances.Items = append(attendances.Items, &attendance)
 	}
 
 	// Get total count

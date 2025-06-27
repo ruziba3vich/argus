@@ -179,7 +179,7 @@ func (p *notificationRepo) List(ctx context.Context, limit, offset uint64, filte
 		); err != nil {
 			return nil, fmt.Errorf("scan error: %w", err)
 		}
-		notifications.Items = append(notifications.Items, notification)
+		notifications.Items = append(notifications.Items, &notification)
 	}
 
 	countSqlStr, countArgs, err := countBuilder.ToSql()
