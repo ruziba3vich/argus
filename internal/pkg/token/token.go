@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/ruziba3vich/argus/internal/pkg/config"
+	logger "github.com/ruziba3vich/prodonik_lgger"
 )
 
 var (
@@ -13,17 +15,29 @@ var (
 	ErrTokenExpiredOrNotValidYet = errors.New("Token is either expired or not active yet")
 )
 
+type JWTHandler struct {
+	Sub        string
+	Exp        string
+	Iat        string
+	Role       string
+	SigningKey string
+	Log        *logger.Logger
+	Token      string
+	Timeout    int
+}
+
 func GenerateJwtToken(jwtsecret string, claims *jwt.MapClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	// Sign and get the complete encoded token as a string using the secret
 	return token.SignedString([]byte(jwtsecret))
 }
 
-func GenerateToken(sub, token_type, jwtsecret string, access_ttl, refresh_ttl time.Duration, optionalFields ...map[string]interface{}) (string, string, error) {
+func GenerateToken(cfg *config.Config, sub, token_type string, optionalFields ...map[string]interface{}) (string, string, error) {
 	accessClaims := jwt.MapClaims{
 		"sub":  sub,
 		"type": token_type,
-		"exp":  time.Now().Add(access_ttl).Unix(),
+		"exp":  time.Now().Add(cfg.Token.AccessTokenExpirationTime).Unix(),
+		"iat":  time.Now().Unix(),
 	}
 
 	for _, fields := range optionalFields {
@@ -33,14 +47,15 @@ func GenerateToken(sub, token_type, jwtsecret string, access_ttl, refresh_ttl ti
 	}
 
 	// generate access token
-	access_token, err := GenerateJwtToken(jwtsecret, &accessClaims)
+	access_token, err := GenerateJwtToken(cfg.Token.SigningKey, &accessClaims)
 	if err != nil {
 		return "", "", err
 	}
 
 	// generate refresh token
-	refresh_token, err := GenerateJwtToken(jwtsecret, &jwt.MapClaims{
-		"exp": time.Now().Add(refresh_ttl).Unix(),
+	refresh_token, err := GenerateJwtToken(cfg.Token.SigningKey, &jwt.MapClaims{
+		"iat": time.Now().Unix(),
+		"exp": time.Now().Add(cfg.Token.RefreshTokenExpirationTime).Unix(),
 		"sub": sub,
 	})
 	if err != nil {
@@ -72,6 +87,22 @@ func ParseJwtToken(tokenStr, jwtsecret string) (map[string]interface{}, error) {
 	// get claims
 	if mapClaims, ok := token.Claims.(jwt.MapClaims); ok {
 		claims = mapClaims
+	}
+	return claims, nil
+}
+
+func ExtractClaims(signingKey, tokenStr string) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
+		return []byte(signingKey), nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !(ok && token.Valid) {
+		return nil, err
 	}
 	return claims, nil
 }

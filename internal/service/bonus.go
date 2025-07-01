@@ -10,7 +10,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/jackc/pgx/v5"
 	"github.com/ruziba3vich/argus/internal/entity"
-	"github.com/ruziba3vich/argus/internal/pkg/postgres"
+	"github.com/ruziba3vich/argus/internal/postgres"
 	logger "github.com/ruziba3vich/prodonik_lgger"
 )
 

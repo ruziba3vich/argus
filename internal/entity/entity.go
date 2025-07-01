@@ -27,6 +27,19 @@ const (
 	UserRoleSuperAdmin UserRole = "super_admin"
 )
 
+func GetUserRole(role string) UserRole {
+	switch role {
+	case "admin":
+		return UserRoleAdmin
+	case "user":
+		return UserRoleUser
+	case "super_admin":
+		return UserRoleSuperAdmin
+	default:
+		return ""
+	}
+}
+
 type Currency string
 
 const (

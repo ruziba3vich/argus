@@ -12,7 +12,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/ruziba3vich/argus/internal/entity"
 	"github.com/ruziba3vich/argus/internal/pkg/helper"
-	"github.com/ruziba3vich/argus/internal/pkg/postgres"
+	"github.com/ruziba3vich/argus/internal/postgres"
 	"golang.org/x/crypto/bcrypt"
 
 	logger "github.com/ruziba3vich/prodonik_lgger"
