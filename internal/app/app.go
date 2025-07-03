@@ -2,8 +2,11 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/ruziba3vich/argus/api"
 	"github.com/ruziba3vich/argus/internal/infrastructure/minio"
 	"github.com/ruziba3vich/argus/internal/pkg/config"
 	"github.com/ruziba3vich/argus/internal/pkg/otlp"
@@ -111,4 +114,28 @@ func builder(db *postgres.Postgres, log *logger.Logger) func(serviceName string)
 	return func(serviceName string) any {
 		return constructors[serviceName](db, log)
 	}
+}
+
+func (a *App) Run() error {
+	contextTimeout, err := time.ParseDuration(a.Config.Context.Timeout)
+	if err != nil {
+		return fmt.Errorf("error while parsing context timeout: %v", err)
+	}
+
+	handler := api.NewRouter(&api.RouteOption{
+		Config:         a.Config,
+		Logger:         a.Logger,
+		Bonus:          a.bonus,
+		Attendance:     a.attendance,
+		File:           a.file,
+		Salary:         a.salary,
+		Task:           a.task,
+		User:           a.user,
+		ShutdownOTLP:   a.ShutdownOTLP,
+		ContextTimeout: contextTimeout,
+	})
+
+	a.server, err = api.NewServer(a.Config, handler)
+
+	return a.server.ListenAndServe()
 }

@@ -1,7 +1,7 @@
 package api
 
 import (
-	"net/http"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -21,14 +21,14 @@ type RouteOption struct {
 	Config *config.Config
 	Logger *lgg.Logger
 
-	Attendance   service.AttendanceRepoInterface
-	Bonus        service.BonusesRepoInterface
-	File         service.FileRepoInterface
-	Salary       service.SalaryRepoInterface
-	Task         service.TaskRepoInterface
-	User         service.UserRepoInterface
-	Server       *http.Server
-	ShutdownOTLP func() error
+	Attendance     service.AttendanceRepoInterface
+	Bonus          service.BonusesRepoInterface
+	File           service.FileRepoInterface
+	Salary         service.SalaryRepoInterface
+	Task           service.TaskRepoInterface
+	User           service.UserRepoInterface
+	ShutdownOTLP   func() error
+	ContextTimeout time.Duration
 
 	DB    *postgres.Postgres
 	MinIO *minio.MinIOClient
@@ -48,16 +48,16 @@ func NewRouter(option *RouteOption) *gin.Engine {
 		Config: option.Config,
 		Logger: option.Logger,
 
-		Attendance:   option.Attendance,
-		Bonuses:      option.Bonus,
-		File:         option.File,
-		Salary:       option.Salary,
-		Task:         option.Task,
-		User:         option.User,
-		MinIO:        option.MinIO,
-		DB:           option.DB,
-		ShutdownOTLP: option.ShutdownOTLP,
-		Server:       option.Server,
+		Attendance:     option.Attendance,
+		Bonuses:        option.Bonus,
+		File:           option.File,
+		Salary:         option.Salary,
+		Task:           option.Task,
+		User:           option.User,
+		MinIO:          option.MinIO,
+		DB:             option.DB,
+		ShutdownOTLP:   option.ShutdownOTLP,
+		ContextTimeout: option.ContextTimeout,
 	}
 
 	app := gin.New()
