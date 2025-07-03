@@ -59,7 +59,7 @@ type UpdateUserPayload struct {
 type userRoutes struct {
 	handlers.BaseHandler
 	userUC   service.UserRepoInterface
-	log      logger.Logger
+	log      *logger.Logger
 	cfg      *config.Config
 	enforcer *casbin.CachedEnforcer
 }

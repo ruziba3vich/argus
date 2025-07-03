@@ -31,7 +31,7 @@ type HandlerOption struct {
 type bonusesRoutes struct {
 	handlers.BaseHandler // Inherit common methods like handleResponse
 	bonusesUC            service.BonusesRepoInterface
-	log                  logger.Logger
+	log                  *logger.Logger
 	cfg                  *config.Config
 	enforcer             *casbin.CachedEnforcer
 }

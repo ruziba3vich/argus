@@ -45,7 +45,7 @@ var ErrorNotFound = fmt.Errorf("record not found") // Simple error simulation
 type attendanceRoutes struct {
 	handlers.BaseHandler // Inherit common methods like handleResponse
 	attendanceUC         service.AttendanceRepoInterface
-	log                  logger.Logger
+	log                  *logger.Logger
 	cfg                  *config.Config
 	enforcer             *casbin.CachedEnforcer
 }

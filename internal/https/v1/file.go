@@ -32,7 +32,7 @@ type HandlerOption struct {
 type fileRoutes struct {
 	handlers.BaseHandler
 	fileUC   service.FileRepoInterface
-	log      logger.Logger
+	log      *logger.Logger
 	cfg      *config.Config
 	enforcer *casbin.CachedEnforcer
 }

@@ -34,7 +34,7 @@ type HandlerOption struct {
 type taskRoutes struct {
 	handlers.BaseHandler // Inherit common methods like handleResponse
 	taskUC               service.TaskRepoInterface
-	log                  logger.Logger
+	log                  *logger.Logger
 	cfg                  *config.Config
 	enforcer             *casbin.CachedEnforcer
 }

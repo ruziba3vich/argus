@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/casbin/casbin/v2"
@@ -10,6 +11,7 @@ import (
 	"github.com/ruziba3vich/argus/internal/infrastructure/minio"
 	"github.com/ruziba3vich/argus/internal/pkg/config"
 	"github.com/ruziba3vich/argus/internal/pkg/token"
+	"github.com/ruziba3vich/argus/internal/postgres"
 	"github.com/ruziba3vich/argus/internal/service"
 	logger "github.com/ruziba3vich/prodonik_lgger"
 
@@ -24,13 +26,16 @@ type HandlerOption struct {
 	Salary         service.SalaryRepoInterface
 	Task           service.TaskRepoInterface
 	User           service.UserRepoInterface
-	Logger         logger.Logger // Renamed to logger.Logger from logger.Interface for consistency with your service
+	Logger         *logger.Logger
 	Config         *config.Config
 	Enforcer       *casbin.CachedEnforcer
 	ContextTimeout time.Duration
+	Server         *http.Server
+	ShutdownOTLP   func() error
 
 	// DEPENDENCIES GO HERE
 
+	DB    *postgres.Postgres
 	MinIO *minio.MinIOClient
 }
 

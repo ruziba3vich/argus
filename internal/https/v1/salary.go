@@ -34,7 +34,7 @@ type HandlerOption struct {
 type salaryRoutes struct {
 	handlers.BaseHandler // Inherit common methods like handleResponse
 	salaryUC             service.SalaryRepoInterface
-	log                  logger.Logger
+	log                  *logger.Logger
 	cfg                  *config.Config
 	enforcer             *casbin.CachedEnforcer
 }
