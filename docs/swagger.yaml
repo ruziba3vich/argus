@@ -1,0 +1,2198 @@
+basePath: /v1
+definitions:
+  entity.Attendance:
+    properties:
+      created_at:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      in_time:
+        type: string
+      out_time:
+        description: 'Nullable: Represents when the user left'
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/entity.AttendanceStatus'
+        description: Enum type
+      updated_at:
+        type: string
+      user_id:
+        description: Foreign key to the users table
+        type: integer
+    type: object
+  entity.AttendanceStatus:
+    enum:
+    - present
+    - absent
+    - late
+    type: string
+    x-enum-varnames:
+    - AttendanceStatusPresent
+    - AttendanceStatusAbsent
+    - AttendanceStatusLate
+  entity.Bonus:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      currency:
+        allOf:
+        - $ref: '#/definitions/entity.Currency'
+        description: Enum
+      id:
+        type: integer
+      reason:
+        description: Assuming nullable
+        type: string
+      super_admin_id:
+        description: Assuming nullable
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  entity.CreateAttendanceRequest:
+    properties:
+      date:
+        type: string
+      in_time:
+        type: string
+      out_time:
+        description: Optional
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/entity.AttendanceStatus'
+        description: Example validation tag
+        enum:
+        - present
+        - absent
+        - late
+      user_id:
+        type: integer
+    required:
+    - date
+    - in_time
+    - status
+    - user_id
+    type: object
+  entity.CreateBonusRequest:
+    properties:
+      amount:
+        type: number
+      currency:
+        $ref: '#/definitions/entity.Currency'
+      reason:
+        type: string
+      super_admin_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  entity.CreateFileRequest:
+    properties:
+      name:
+        type: string
+      task_id:
+        type: integer
+    type: object
+  entity.CreateSalaryRequest:
+    properties:
+      admin_id:
+        type: integer
+      amount:
+        type: number
+      currency:
+        $ref: '#/definitions/entity.Currency'
+      pay_date:
+        type: string
+      status:
+        $ref: '#/definitions/entity.SalaryStatus'
+      updater_admin_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  entity.CreateTaskRequest:
+    properties:
+      admin_id:
+        type: integer
+      assigned_to:
+        type: integer
+      description:
+        type: string
+      due_date:
+        type: string
+      priority:
+        $ref: '#/definitions/entity.TaskPriority'
+      status:
+        $ref: '#/definitions/entity.TaskStatus'
+      title:
+        type: string
+    type: object
+  entity.CreateUserRequest:
+    properties:
+      bio:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        description: For creation, will be hashed
+        type: string
+      phone:
+        type: string
+      photo_url:
+        type: string
+      role:
+        $ref: '#/definitions/entity.UserRole'
+    type: object
+  entity.Currency:
+    enum:
+    - USD
+    - EUR
+    - GBP
+    type: string
+    x-enum-varnames:
+    - CurrencyUSD
+    - CurrencyEUR
+    - CurrencyGBP
+  entity.File:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      task_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  entity.GetAllAttendancesResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.Attendance'
+        type: array
+      total:
+        type: integer
+    type: object
+  entity.GetAllBonusesResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.Bonus'
+        type: array
+      total:
+        type: integer
+    type: object
+  entity.GetAllFilesResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.File'
+        type: array
+      total:
+        type: integer
+    type: object
+  entity.GetAllSalariesResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.Salary'
+        type: array
+      total:
+        type: integer
+    type: object
+  entity.GetAllTasksResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.Task'
+        type: array
+      total:
+        type: integer
+    type: object
+  entity.GetAllUsersResponse:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/entity.User'
+        type: array
+      total:
+        type: integer
+    type: object
+  entity.Salary:
+    properties:
+      admin_id:
+        type: integer
+      amount:
+        type: number
+      created_at:
+        type: string
+      currency:
+        allOf:
+        - $ref: '#/definitions/entity.Currency'
+        description: Enum
+      id:
+        type: integer
+      pay_date:
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/entity.SalaryStatus'
+        description: Enum
+      updated_at:
+        type: string
+      updater_admin_id:
+        description: Assuming nullable
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  entity.SalaryStatus:
+    enum:
+    - paid
+    - pending
+    - overdue
+    type: string
+    x-enum-varnames:
+    - SalaryStatusPaid
+    - SalaryStatusPending
+    - SalaryStatusOverdue
+  entity.Task:
+    properties:
+      admin_id:
+        description: Refers to UserID
+        type: integer
+      assigned_to:
+        description: Assuming nullable, refers to UserID
+        type: integer
+      created_at:
+        type: string
+      description:
+        description: Assuming nullable
+        type: string
+      due_date:
+        description: Assuming nullable
+        type: string
+      id:
+        type: integer
+      priority:
+        allOf:
+        - $ref: '#/definitions/entity.TaskPriority'
+        description: Enum
+      status:
+        allOf:
+        - $ref: '#/definitions/entity.TaskStatus'
+        description: Enum
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.TaskPriority:
+    enum:
+    - low
+    - medium
+    - high
+    type: string
+    x-enum-varnames:
+    - TaskPriorityLow
+    - TaskPriorityMedium
+    - TaskPriorityHigh
+  entity.TaskStatus:
+    enum:
+    - pending
+    - in_progress
+    - completed
+    - cancelled
+    type: string
+    x-enum-varnames:
+    - TaskStatusPending
+    - TaskStatusInProgress
+    - TaskStatusCompleted
+    - TaskStatusCancelled
+  entity.UpdateAttendanceRequest:
+    properties:
+      date:
+        type: string
+      id:
+        description: ID of the record to update
+        type: integer
+      in_time:
+        type: string
+      out_time:
+        description: Can be set, updated, or nulled (if the value is nil)
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/entity.AttendanceStatus'
+        enum:
+        - present
+        - absent
+        - late
+      user_id:
+        description: 'Optional: If user can be changed'
+        type: integer
+    required:
+    - id
+    type: object
+  entity.UpdateBonusRequest:
+    properties:
+      amount:
+        type: number
+      currency:
+        $ref: '#/definitions/entity.Currency'
+      id:
+        type: integer
+      reason:
+        type: string
+      super_admin_id:
+        type: integer
+      user_id:
+        description: Optional update
+        type: integer
+    type: object
+  entity.UpdateFileRequest:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      task_id:
+        type: integer
+    type: object
+  entity.UpdateSalaryRequest:
+    properties:
+      admin_id:
+        type: integer
+      amount:
+        type: number
+      currency:
+        $ref: '#/definitions/entity.Currency'
+      id:
+        type: integer
+      pay_date:
+        type: string
+      status:
+        $ref: '#/definitions/entity.SalaryStatus'
+      updater_admin_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  entity.UpdateTaskRequest:
+    properties:
+      admin_id:
+        type: integer
+      assigned_to:
+        type: integer
+      description:
+        type: string
+      due_date:
+        type: string
+      id:
+        type: integer
+      priority:
+        $ref: '#/definitions/entity.TaskPriority'
+      status:
+        $ref: '#/definitions/entity.TaskStatus'
+      title:
+        type: string
+    type: object
+  entity.User:
+    properties:
+      bio:
+        description: Assuming nullable
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      phone:
+        type: string
+      photo_url:
+        description: Assuming nullable
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/entity.UserRole'
+        description: Enum
+      updated_at:
+        type: string
+    type: object
+  entity.UserRole:
+    enum:
+    - admin
+    - user
+    - super_admin
+    type: string
+    x-enum-varnames:
+    - UserRoleAdmin
+    - UserRoleUser
+    - UserRoleSuperAdmin
+  v1.Response:
+    properties:
+      custom_message: {}
+      data: {}
+      description:
+        type: string
+      status:
+        type: string
+    type: object
+  v1.UpdateUserPayload:
+    properties:
+      bio:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        description: For password changes
+        type: string
+      phone:
+        type: string
+      photo_url:
+        type: string
+      role:
+        type: string
+    type: object
+  v1.UserResponse:
+    properties:
+      bio:
+        type: string
+      created_at: {}
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      phone:
+        type: string
+      photo_url:
+        type: string
+      role:
+        $ref: '#/definitions/entity.UserRole'
+      updated_at: {}
+    type: object
+info:
+  contact: {}
+  description: Argus api routes
+  title: Argus APIs
+  version: "1.0"
+paths:
+  /attendance:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of attendance records with optional filtering,
+        pagination, and search
+      parameters:
+      - description: Filter by User ID
+        in: query
+        name: user_id
+        type: integer
+      - description: Filter by Date (YYYY-MM-DD)
+        in: query
+        name: date
+        type: string
+      - description: Filter by Status (e.g., Present, Absent)
+        in: query
+        name: status
+        type: string
+      - description: Search by Status or other relevant text fields
+        in: query
+        name: search
+        type: string
+      - default: 1
+        description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of records per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved attendance records
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.GetAllAttendancesResponse'
+              type: object
+        "400":
+          description: Bad Request - Invalid query parameters
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get all attendance records
+      tags:
+      - ATTENDANCE
+    post:
+      consumes:
+      - application/json
+      description: Creates a new attendance record for a user
+      parameters:
+      - description: Attendance record details
+        in: body
+        name: attendance
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateAttendanceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Attendance record created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Attendance'
+              type: object
+        "400":
+          description: Bad Request - Invalid input or missing data
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new attendance record
+      tags:
+      - ATTENDANCE
+  /attendance/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an attendance record by its unique ID
+      parameters:
+      - description: Attendance ID to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Attendance record deleted successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Attendance record not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Delete an attendance record
+      tags:
+      - ATTENDANCE
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single attendance record by its unique ID
+      parameters:
+      - description: Attendance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Attendance record details
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Attendance'
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Attendance record not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get an attendance record by ID
+      tags:
+      - ATTENDANCE
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing attendance record by its ID.
+      parameters:
+      - description: Attendance ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated attendance record details
+        in: body
+        name: attendance
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateAttendanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Attendance record updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID or request body
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Attendance record not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Update an attendance record
+      tags:
+      - ATTENDANCE
+  /bonuses:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of bonuses with optional filtering, pagination,
+        and search
+      parameters:
+      - description: Filter by User ID
+        in: query
+        name: user_id
+        type: integer
+      - description: Filter by Super Admin ID
+        in: query
+        name: superadminid
+        type: integer
+      - description: Search by reason
+        in: query
+        name: search
+        type: string
+      - default: 1
+        description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of records per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved bonuses
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.GetAllBonusesResponse'
+              type: object
+        "400":
+          description: Bad Request - Invalid query parameters
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get all bonuses
+      tags:
+      - BONUSES
+    post:
+      consumes:
+      - application/json
+      description: Creates a new bonus record for a user
+      parameters:
+      - description: Bonus details
+        in: body
+        name: bonus
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateBonusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Bonus created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Bonus'
+              type: object
+        "400":
+          description: Bad Request - Invalid input or missing data
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new bonus
+      tags:
+      - BONUSES
+  /bonuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a bonus by its unique ID
+      parameters:
+      - description: Bonus ID to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Bonus deleted successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Bonus not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a bonus
+      tags:
+      - BONUSES
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single bonus record by its unique ID
+      parameters:
+      - description: Bonus ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Bonus details
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Bonus'
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Bonus not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get a bonus by ID
+      tags:
+      - BONUSES
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing bonus by its ID.
+      parameters:
+      - description: Bonus ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated bonus details
+        in: body
+        name: bonus
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateBonusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Bonus updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID or request body
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Bonus not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Update a bonus record
+      tags:
+      - BONUSES
+  /files:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of files with optional filtering, pagination,
+        and search
+      parameters:
+      - description: Filter by Task ID
+        in: query
+        name: task_id
+        type: integer
+      - description: Search by file name
+        in: query
+        name: search
+        type: string
+      - default: 1
+        description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of records per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved files
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.GetAllFilesResponse'
+              type: object
+        "400":
+          description: Bad Request - Invalid query parameters
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get all files
+      tags:
+      - FILES
+    post:
+      consumes:
+      - application/json
+      description: Creates a new file record, optionally linked to a task
+      parameters:
+      - description: File details
+        in: body
+        name: file
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateFileRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: File created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.File'
+              type: object
+        "400":
+          description: Bad Request - Invalid input or missing data
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new file record
+      tags:
+      - FILES
+  /files/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a file by its unique ID
+      parameters:
+      - description: File ID to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: File deleted successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - File not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a file
+      tags:
+      - FILES
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single file record by its unique ID
+      parameters:
+      - description: File ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: File details
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.File'
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - File not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get a file by ID
+      tags:
+      - FILES
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing file by its ID.
+      parameters:
+      - description: File ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated file details
+        in: body
+        name: file
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateFileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: File updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID or request body
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - File not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Update a file record
+      tags:
+      - FILES
+  /salaries:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of salaries with optional filtering, pagination,
+        and search
+      parameters:
+      - description: Filter by User ID
+        in: query
+        name: user_id
+        type: integer
+      - description: Filter by Admin ID
+        in: query
+        name: admin_id
+        type: integer
+      - description: Filter by Status (e.g., 'paid', 'pending')
+        in: query
+        name: status
+        type: string
+      - description: Filter by Pay Date (YYYY-MM-DD)
+        in: query
+        name: pay_date
+        type: string
+      - description: Search by currency or status
+        in: query
+        name: search
+        type: string
+      - default: 1
+        description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of records per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved salaries
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.GetAllSalariesResponse'
+              type: object
+        "400":
+          description: Bad Request - Invalid query parameters
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get all salaries
+      tags:
+      - SALARIES
+    post:
+      consumes:
+      - application/json
+      description: Creates a new salary record for a user
+      parameters:
+      - description: Salary details
+        in: body
+        name: salary
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateSalaryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Salary created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Salary'
+              type: object
+        "400":
+          description: Bad Request - Invalid input or missing data
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new salary record
+      tags:
+      - SALARIES
+  /salaries/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a salary record by its unique ID
+      parameters:
+      - description: Salary ID to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Salary deleted successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Salary not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a salary record
+      tags:
+      - SALARIES
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single salary record by its unique ID
+      parameters:
+      - description: Salary ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Salary details
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Salary'
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Salary not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get a salary record by ID
+      tags:
+      - SALARIES
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing salary record by its ID.
+      parameters:
+      - description: Salary ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated salary details
+        in: body
+        name: salary
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateSalaryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Salary updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID or request body
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Salary not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Update a salary record
+      tags:
+      - SALARIES
+  /tasks:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of tasks with optional filtering, pagination,
+        and search
+      parameters:
+      - description: Filter by Assigned User ID
+        in: query
+        name: assigned_to
+        type: integer
+      - description: Filter by Admin Creator ID
+        in: query
+        name: admin_id
+        type: integer
+      - description: Filter by Status (e.g., 'todo', 'in_progress')
+        in: query
+        name: status
+        type: string
+      - description: Filter by Priority (e.g., 'high', 'low')
+        in: query
+        name: priority
+        type: string
+      - description: Search by title, description, status, or priority
+        in: query
+        name: search
+        type: string
+      - default: 1
+        description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of records per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved tasks
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.GetAllTasksResponse'
+              type: object
+        "400":
+          description: Bad Request - Invalid query parameters
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get all tasks
+      tags:
+      - TASKS
+    post:
+      consumes:
+      - application/json
+      description: Creates a new task and can assign it to a user
+      parameters:
+      - description: Task details
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Task created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Task'
+              type: object
+        "400":
+          description: Bad Request - Invalid input or missing data
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new task
+      tags:
+      - TASKS
+  /tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a task by its unique ID (Admins only)
+      parameters:
+      - description: Task ID to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task deleted successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Task not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a task
+      tags:
+      - TASKS
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single task by its unique ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task details
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.Task'
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Task not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get a task by ID
+      tags:
+      - TASKS
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing task by its ID.
+      parameters:
+      - description: Task ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated task details
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID or request body
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - Task not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Update a task
+      tags:
+      - TASKS
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of users with optional filtering and pagination
+      parameters:
+      - description: Filter by Role (e.g., 'admin', 'user')
+        in: query
+        name: role
+        type: string
+      - description: Search by name, email, or phone
+        in: query
+        name: search
+        type: string
+      - default: 1
+        description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of records per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved users
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/entity.GetAllUsersResponse'
+              type: object
+        "400":
+          description: Bad Request - Invalid query parameters
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get all users
+      tags:
+      - USERS
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user with a hashed password
+      parameters:
+      - description: User creation details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/v1.UserResponse'
+              type: object
+        "400":
+          description: Bad Request - Invalid input or validation error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new user
+      tags:
+      - USERS
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a user by their unique ID
+      parameters:
+      - description: User ID to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User deleted successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - User not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a user
+      tags:
+      - USERS
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a single user by their unique ID, without sensitive data
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User details
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/v1.UserResponse'
+              type: object
+        "400":
+          description: Bad Request - Invalid ID format
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - User not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get a user by ID
+      tags:
+      - USERS
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing user's details by their ID. Can also update
+        password.
+      parameters:
+      - description: User ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated user details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/v1.UpdateUserPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "400":
+          description: Bad Request - Invalid ID or request body
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "404":
+          description: Not Found - User not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Update a user
+      tags:
+      - USERS
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
