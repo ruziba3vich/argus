@@ -193,20 +193,20 @@ func NewConfig() (*Config, error) {
 	config.Server.IdleTimeout = getEnv("SERVER_IDLE_TIMEOUT", "120s")
 
 	// db configuration
-	config.DB.Host = getEnv("POSTGRES_HOST", "108.181.201.147")
+	config.DB.Host = getEnv("POSTGRES_HOST", "168.119.255.188")
 	config.DB.Port = getEnv("POSTGRES_PORT", "5433")
-	config.DB.Name = getEnv("POSTGRES_DATABASE", "sugurta")
-	config.DB.User = getEnv("POSTGRES_USER", "sugurta")
+	config.DB.Name = getEnv("POSTGRES_DATABASE", "argus")
+	config.DB.User = getEnv("POSTGRES_USER", "argus")
 	config.DB.Password = getEnv("POSTGRES_PASSWORD", "v8Qe96csIhZZ")
 	config.DB.SSLMode = getEnv("POSTGRES_SSLMODE", "disable")
 
 	config.PG.PoolMax = cast.ToInt(getEnv("POSTGRES_POOL_MAX", "1"))
 
 	// redis configuration
-	config.Redis.Host = getEnv("REDIS_HOST", "108.181.201.147")
-	config.Redis.Port = getEnv("REDIS_PORT", "6379")
-	config.Redis.Password = getEnv("REDIS_PASSWORD", "97ZF8bKFpvwx")
-	config.Redis.Name = getEnv("REDIS_DATABASE", "0")
+	// config.Redis.Host = getEnv("REDIS_HOST", "108.181.201.147")
+	// config.Redis.Port = getEnv("REDIS_PORT", "6379")
+	// config.Redis.Password = getEnv("REDIS_PASSWORD", "97ZF8bKFpvwx")
+	// config.Redis.Name = getEnv("REDIS_DATABASE", "0")
 
 	config.Email.From = getEnv("EMAIL_FROM", "your_email")
 	config.Email.Password = getEnv("EMAIL_PASSWORD", "your_email")
@@ -225,7 +225,7 @@ func NewConfig() (*Config, error) {
 	config.MinIO.Endpoint = getEnv("MINIO_ENDPOINT", "localhost:9000")
 	config.MinIO.AccessKey = getEnv("MINIO_ACCESS_KEY", "minioadmin")
 	config.MinIO.SecretKey = getEnv("MINIO_SECRET_KEY", "minioadmin123")
-	config.MinIO.BucketName = getEnv("MINIO_BUCKET_NAME", "sugurta")
+	config.MinIO.BucketName = getEnv("MINIO_BUCKET_NAME", "argus")
 
 	// multicard configuration
 	config.Multicard.Aggr.ApplicationID = getEnv("MULTICARD_AGGR_APPLiCATION_ID", "application_id")
