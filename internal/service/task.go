@@ -31,10 +31,10 @@ type TaskRepoInterface interface {
 type taskRepo struct {
 	tableName string
 	db        *postgres.Postgres
-	log       logger.Logger
+	log       *logger.Logger
 }
 
-func NewTaskRepo(db *postgres.Postgres, log logger.Logger) TaskRepoInterface {
+func NewTaskRepo(db *postgres.Postgres, log *logger.Logger) TaskRepoInterface {
 	return &taskRepo{
 		tableName: taskTableName,
 		db:        db,

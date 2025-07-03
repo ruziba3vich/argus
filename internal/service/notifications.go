@@ -30,10 +30,10 @@ type NotificationRepoInterface interface {
 type notificationRepo struct {
 	tableName string
 	db        *postgres.Postgres
-	log       logger.Logger
+	log       *logger.Logger
 }
 
-func NewNotificationRepo(db *postgres.Postgres, log logger.Logger) NotificationRepoInterface {
+func NewNotificationRepo(db *postgres.Postgres, log *logger.Logger) NotificationRepoInterface {
 	return &notificationRepo{
 		tableName: notificationTableName,
 		db:        db,

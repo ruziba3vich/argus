@@ -31,10 +31,10 @@ type AttendanceRepoInterface interface {
 type attendanceRepo struct {
 	tableName string
 	db        *postgres.Postgres
-	log       logger.Logger
+	log       *logger.Logger
 }
 
-func NewAttendanceRepo(db *postgres.Postgres, log logger.Logger) AttendanceRepoInterface {
+func NewAttendanceRepo(db *postgres.Postgres, log *logger.Logger) AttendanceRepoInterface {
 	return &attendanceRepo{
 		tableName: attendanceTableName,
 		db:        db,

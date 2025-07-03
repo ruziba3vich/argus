@@ -35,10 +35,10 @@ type UserRepoInterface interface {
 type userRepo struct {
 	tableName string
 	db        *postgres.Postgres
-	log       logger.Logger
+	log       *logger.Logger
 }
 
-func NewUserRepo(db *postgres.Postgres, log logger.Logger) UserRepoInterface {
+func NewUserRepo(db *postgres.Postgres, log *logger.Logger) UserRepoInterface {
 	return &userRepo{
 		tableName: userTableName,
 		db:        db,

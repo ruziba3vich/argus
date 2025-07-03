@@ -31,10 +31,10 @@ type SalaryRepoInterface interface {
 type salaryRepo struct {
 	tableName string
 	db        *postgres.Postgres
-	log       logger.Logger
+	log       *logger.Logger
 }
 
-func NewSalaryRepo(db *postgres.Postgres, log logger.Logger) SalaryRepoInterface {
+func NewSalaryRepo(db *postgres.Postgres, log *logger.Logger) SalaryRepoInterface {
 	return &salaryRepo{
 		tableName: salaryTableName,
 		db:        db,

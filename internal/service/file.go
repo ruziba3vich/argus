@@ -31,10 +31,10 @@ type FileRepoInterface interface {
 type fileRepo struct {
 	tableName string
 	db        *postgres.Postgres
-	log       logger.Logger
+	log       *logger.Logger
 }
 
-func NewFileRepo(db *postgres.Postgres, log logger.Logger) FileRepoInterface {
+func NewFileRepo(db *postgres.Postgres, log *logger.Logger) FileRepoInterface {
 	return &fileRepo{
 		tableName: fileTableName,
 		db:        db,

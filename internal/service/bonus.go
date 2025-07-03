@@ -31,10 +31,10 @@ type BonusesRepoInterface interface {
 type bonusesRepo struct {
 	tableName string
 	db        *postgres.Postgres
-	log       logger.Logger
+	log       *logger.Logger
 }
 
-func NewBonusesRepo(db *postgres.Postgres, log logger.Logger) BonusesRepoInterface {
+func NewBonusesRepo(db *postgres.Postgres, log *logger.Logger) BonusesRepoInterface {
 	return &bonusesRepo{
 		tableName: bonusesTableName,
 		db:        db,
